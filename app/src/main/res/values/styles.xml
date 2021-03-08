@@ -57,4 +57,16 @@
     </style>
 
 
+    <style name="rejectbutton" parent="viewParent">
+        <item name="android:background">@drawable/reject_pending_button</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="acceptbutton" parent="viewParent">
+        <item name="android:background">@drawable/accept_pending_button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/whiteTextColor</item>
+    </style>
+
+
 </resources>

@@ -9,8 +9,20 @@
         android:roundIcon="@drawable/com"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUp"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Pending_Complaint"
+            android:label="Pending Complaints">
+
+        </activity>
+        <activity
+            android:name=".Pending_Requests"
+            android:label="Pending Requests"
+            android:logo="@drawable/com"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".SignUp"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

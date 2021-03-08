@@ -91,6 +91,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/signup"
             style="@style/loginButton"
             android:layout_marginTop="20dp"
             android:layout_gravity="center"
