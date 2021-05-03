@@ -20,23 +20,26 @@
             style="@style/headerTextPrimary"
             android:text="@string/register"
             android:layout_marginTop="@dimen/loginViewsMargin"/>
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/parent"
             android:layout_marginTop="@dimen/signup_text_margin_top">
             <EditText
+                android:id="@+id/edtCompany"
                 style="@style/modifiedEditText"
                 android:inputType="text"
                 android:maxLines="1"
-                android:hint="Name" />
+                android:hint="Company's Name"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 
 
+
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/parent"
             android:layout_marginTop="@dimen/signup_text_margin_top">
             <EditText
+                android:id="@+id/edtEmail"
                 style="@style/modifiedEditText"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
@@ -47,48 +50,70 @@
             style="@style/parent"
             android:layout_marginTop="@dimen/signup_text_margin_top">
             <EditText
+                android:id="@+id/edtName"
                 style="@style/modifiedEditText"
                 android:inputType="text"
                 android:maxLines="1"
-                android:hint="Name of the Company"/>
+                android:hint="Name" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout            style="@style/parent"
+       <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/parent"
+            android:layout_weight="0.1"
             android:layout_marginTop="@dimen/signup_text_margin_top">
             <EditText
+                android:id="@+id/edtPassword"
                 style="@style/modifiedEditText"
                 android:hint="@string/login_password_hint"
                 android:maxLines="1"
                 android:inputType="textPassword"/>
-
         </com.google.android.material.textfield.TextInputLayout>
-
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top"
-            >
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/signup_text_margin_top">
+        <ImageView
+            android:id="@+id/show_pass_btn"
+            android:layout_height="match_parent"
+            android:src="@drawable/show_password"
+            android:layout_width="22dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/parent"
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/signup_text_margin_top"
+                    >
                 <EditText
+                    android:id="@+id/edtAddress"
                     style="@style/modifiedEditText"
-
                     android:layout_weight="1"
                     android:hint="Address"
                     android:inputType="text"
                     android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
             <Button
+                android:id="@+id/location"
                 android:textSize="10dp"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Get Current\nLocation"
                 style="@style/loginButton"
                 android:layout_weight="1"/>
             </LinearLayout>
-        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/signup"

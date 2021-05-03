@@ -1,5 +1,6 @@
 package com.example.tinderui;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.tinderui.adapters.ArrayAdapterPendingRequests;
+import com.example.tinderui.adapters.ArrayAdapterResolvedComplaints;
 import com.example.tinderui.internetcheck.InternetCheck;
 
 import org.json.JSONArray;
@@ -27,64 +28,75 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Pending_Requests extends AppCompatActivity {
+public class Resolved_Complaints extends AppCompatActivity {
     RecyclerView rcv;
-    ArrayAdapterPendingRequests adapter;
+    ArrayAdapterResolvedComplaints adapter;
     RecyclerView.LayoutManager mgr;
-    ArrayList<String> emp_id;
+    ArrayList<String> complaint;
+    ArrayList<String> subject;
     ArrayList<String> emp_name;
-    ArrayList<String> emp_email;
+    ArrayList<String> complaint_id;
     ProgressDialog pd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pending__requests);
+        setContentView(R.layout.activity_resolved__complaints);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        rcv=findViewById(R.id.rcv);
+        rcv = findViewById(R.id.rcv);
+        complaint = new ArrayList<>();
+        subject = new ArrayList<>();
 
-        emp_id=new ArrayList<>();
-        emp_email=new ArrayList<>();
-        emp_name=new ArrayList<>();
+        emp_name = new ArrayList<>();
+        complaint_id = new ArrayList<>();
+
 
         InternetCheck internetCheck=new InternetCheck();
-        boolean b=internetCheck.checkConnection(Pending_Requests.this);
+        boolean b=internetCheck.checkConnection(Resolved_Complaints.this);
+
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        final String company = sh.getString("company", "");
 
         if(b) {
-            String url="https://complainbox2000.000webhostapp.com/pending_request.php";
+            String url = "https://complainbox2000.000webhostapp.com/resolved_complaints.php";
             pd = new ProgressDialog(this, R.style.MyAlertDialogStyle);
             pd.setTitle("Connecting Server");
             pd.setMessage("loading...");
             pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             pd.show();
-
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     pd.dismiss();
-                    Toast.makeText(Pending_Requests.this, ""+response, Toast.LENGTH_SHORT).show();
                     if (response.trim().equals("")) {
-                        Toast.makeText(Pending_Requests.this, "There are no pending requests to display", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Resolved_Complaints.this, "There are no resolved complaints to display", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                    try {
-                        JSONArray jsonArray = new JSONArray(response);
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String name1 = null;
-                            String emp_id1 = null;
-                            String email1 = null;
-                            name1 = jsonObject.getString("name");
-                            email1 = jsonObject.getString("email");
-                            emp_id1 = jsonObject.getString("emp_id");
-                            emp_email.add(email1);
-                            emp_id.add(emp_id1);
-                            emp_name.add(name1);
+                        // Toast.makeText(Resolved_Complaints.this, "hii" + response, Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                String name1 = null;
+                                String complaint_id1 = null;
+                                String subject1 = null;
+                                String description1 = null;
 
-                            adapter.notifyDataSetChanged();
+                                subject1 = jsonObject.getString("subject");
+                                name1 = jsonObject.getString("name");
+                                description1 = jsonObject.getString("description");
+                                complaint_id1 = jsonObject.getString("complaint_id");
+
+                                complaint.add(description1);
+
+                                subject.add(subject1);
+                                complaint_id.add(complaint_id1);
+                                emp_name.add("Raised by " + name1);
+                                adapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                     }
                 }
             }, new Response.ErrorListener() {
@@ -93,25 +105,26 @@ public class Pending_Requests extends AppCompatActivity {
                     pd.dismiss();
                 }
             }) {
+                @Nullable
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<>();
-                    SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                    String s1 = sh.getString("company", "");
-                    map.put("company", s1.trim());
+                    map.put("company", company);
                     return map;
                 }
             };
             RequestQueue mque = Volley.newRequestQueue(getApplicationContext());
             mque.add(stringRequest);
             mgr = new LinearLayoutManager(this);
+
             rcv.setLayoutManager(mgr);
-            adapter = new ArrayAdapterPendingRequests(Pending_Requests.this, emp_id, emp_name, emp_email);
+            adapter = new ArrayAdapterResolvedComplaints(this, complaint, emp_name, subject, complaint_id);
             rcv.setAdapter(adapter);
         }
         else{
             Toast.makeText(this, "Check your internet connection", Toast.LENGTH_SHORT).show();
         }
+
     }
     @Override
     public boolean onSupportNavigateUp() {

@@ -4,7 +4,11 @@
 
     <item android:title="Pending Requests"
         android:onClick="pending_requests"/>
-    <item android:title="Pending Complains" />
-    <item android:title="Resolved Complains" />
-    <item android:title="Logout" />
+    <item android:title="Approved Complains"
+
+        android:onClick="move_to_approved_complaints"/>
+    <item android:title="Resolved Complains"
+        android:onClick="move_to_resolved_complaints"/>
+    <item android:title="Logout"
+        android:onClick="logout"/>
 </menu>
