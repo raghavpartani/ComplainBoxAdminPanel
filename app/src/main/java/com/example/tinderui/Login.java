@@ -36,7 +36,7 @@ ProgressDialog pd;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
-        
+
         company=findViewById(R.id.edtCompany);
         password=findViewById(R.id.editTextPassword);
 
