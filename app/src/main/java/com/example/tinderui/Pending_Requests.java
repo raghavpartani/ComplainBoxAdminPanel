@@ -18,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tinderui.adapters.ArrayAdapterPendingRequests;
 import com.example.tinderui.internetcheck.InternetCheck;
+import com.example.tinderui.model.Employee;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,7 +62,7 @@ public class Pending_Requests extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     pd.dismiss();
-                    Toast.makeText(Pending_Requests.this, ""+response, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Pending_Requests.this, ""+response, Toast.LENGTH_SHORT).show();
                     if (response.trim().equals("")) {
                         Toast.makeText(Pending_Requests.this, "There are no pending requests to display", Toast.LENGTH_SHORT).show();
                     }
@@ -70,20 +71,19 @@ public class Pending_Requests extends AppCompatActivity {
                         JSONArray jsonArray = new JSONArray(response);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String name1 = null;
-                            String emp_id1 = null;
-                            String email1 = null;
-                            name1 = jsonObject.getString("name");
-                            email1 = jsonObject.getString("email");
-                            emp_id1 = jsonObject.getString("emp_id");
-                            emp_email.add(email1);
-                            emp_id.add(emp_id1);
-                            emp_name.add(name1);
+                           Employee employee=new Employee();
+                            employee.setEmp_name(jsonObject.getString("name"));
+                            employee.setEmp_email(jsonObject.getString("email"));
+                            employee.setEmp_id(jsonObject.getString("emp_id"));
+                            emp_email.add(employee.getEmp_email());
+                            emp_id.add(employee.getEmp_id());
+                            emp_name.add(employee.getEmp_name());
 
                             adapter.notifyDataSetChanged();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(Pending_Requests.this, "something went wrong", Toast.LENGTH_SHORT).show();
                     }
                     }
                 }
@@ -91,6 +91,8 @@ public class Pending_Requests extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     pd.dismiss();
+                    Toast.makeText(Pending_Requests.this, "something went wrong", Toast.LENGTH_SHORT).show();
+
                 }
             }) {
                 @Override

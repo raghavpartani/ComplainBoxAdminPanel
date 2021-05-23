@@ -2,13 +2,10 @@ package com.example.tinderui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +24,7 @@ import com.example.tinderui.internetcheck.InternetCheck;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 TextView signup;
 Button login;
 EditText company,password;
@@ -39,8 +36,7 @@ ProgressDialog pd;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
-
-
+        
         company=findViewById(R.id.edtCompany);
         password=findViewById(R.id.editTextPassword);
 
@@ -51,7 +47,7 @@ ProgressDialog pd;
 
         }
         else {
-            Intent intent=new Intent(MainActivity.this,Pending_Complaint.class);
+            Intent intent=new Intent(Login.this, Pending_Complaints.class);
             startActivity(intent);
             finish();
         }
@@ -62,7 +58,7 @@ ProgressDialog pd;
             @Override
             public void onClick(View v) {
                 InternetCheck internetCheck=new InternetCheck();
-                boolean b=internetCheck.checkConnection(MainActivity.this);
+                boolean b=internetCheck.checkConnection(Login.this);
 
                 if(company.getText().toString().trim().equals("")){
                     company.setError("Email is missing");
@@ -73,10 +69,10 @@ ProgressDialog pd;
                 else if (password.length() < 6) {
                     password.setError("Please Enter Minimum 6 Char.");
                 } else if(!b){
-                    Toast.makeText(MainActivity.this, "Check your internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Check your internet connection", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    pd = new ProgressDialog(MainActivity.this, R.style.MyAlertDialogStyle);
+                    pd = new ProgressDialog(Login.this, R.style.MyAlertDialogStyle);
                     pd.setTitle("Connecting Server");
                     pd.setMessage("loading...");
                     pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -86,7 +82,7 @@ ProgressDialog pd;
                         public void onResponse(String response) {
                             pd.dismiss();
                             if(response.trim().equals("Login Successful")){
-                                Intent intent=new Intent(MainActivity.this,Pending_Complaint.class);
+                                Intent intent=new Intent(Login.this, Pending_Complaints.class);
                                 startActivity(intent);
                                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
                                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
@@ -95,17 +91,17 @@ ProgressDialog pd;
                                 finish();
                             }
                             else  if(response.trim().equals("Invalid email or password")){
-                                Toast.makeText(MainActivity.this, "Invalid Details", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, "Invalid Details", Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(MainActivity.this, "Something went wrong try again later", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, "Something went wrong try again later", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             pd.dismiss();
-                            Toast.makeText(MainActivity.this, "Something went wrong try again later", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Something went wrong try again later", Toast.LENGTH_SHORT).show();
                         }
                     }) {
                         @Override
@@ -127,7 +123,7 @@ ProgressDialog pd;
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,SignUp.class);
+                Intent intent=new Intent(Login.this,SignUp.class);
                 startActivity(intent);
             }
         });

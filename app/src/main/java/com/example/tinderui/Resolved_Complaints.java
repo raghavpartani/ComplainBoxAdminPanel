@@ -19,6 +19,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tinderui.adapters.ArrayAdapterResolvedComplaints;
 import com.example.tinderui.internetcheck.InternetCheck;
+import com.example.tinderui.model.Complaint;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,21 +78,17 @@ public class Resolved_Complaints extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String name1 = null;
-                                String complaint_id1 = null;
-                                String subject1 = null;
-                                String description1 = null;
+                                Complaint complaint_object=new Complaint();
 
-                                subject1 = jsonObject.getString("subject");
-                                name1 = jsonObject.getString("name");
-                                description1 = jsonObject.getString("description");
-                                complaint_id1 = jsonObject.getString("complaint_id");
+                                complaint_object.setSubject(jsonObject.getString("subject"));
+                                complaint_object.setEmp_name(jsonObject.getString("name"));
+                                complaint_object.setDescription(jsonObject.getString("description"));
+                                complaint_object.setComplaint_id(jsonObject.getString("complaint_id"));
 
-                                complaint.add(description1);
-
-                                subject.add(subject1);
-                                complaint_id.add(complaint_id1);
-                                emp_name.add("Raised by " + name1);
+                                complaint.add(complaint_object.getDescription());
+                                subject.add(complaint_object.getSubject());
+                                complaint_id.add(complaint_object.getComplaint_id());
+                                emp_name.add("Raised by " + complaint_object.getEmp_name());
                                 adapter.notifyDataSetChanged();
                             }
                         } catch (JSONException e) {

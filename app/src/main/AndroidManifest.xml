@@ -19,12 +19,12 @@
             android:label="Resolved Complaints"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".approved_complaints"
+        <activity android:name=".Approved_Complaints"
             android:label="Approved Complaints"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".Pending_Complaint"
+            android:name=".Pending_Complaints"
             android:label="Pending Complaints"
             android:screenOrientation="portrait">
         </activity>
@@ -38,7 +38,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name=".Login"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

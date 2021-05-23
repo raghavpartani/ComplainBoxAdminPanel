@@ -19,6 +19,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tinderui.adapters.ArrayAdapterApprovedComplaints;
 import com.example.tinderui.internetcheck.InternetCheck;
+import com.example.tinderui.model.Complaint;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class approved_complaints extends AppCompatActivity {
+public class Approved_Complaints extends AppCompatActivity {
     RecyclerView rcv;
     ArrayAdapterApprovedComplaints adapter;
     RecyclerView.LayoutManager mgr;
@@ -53,7 +54,7 @@ public class approved_complaints extends AppCompatActivity {
 
 
         InternetCheck internetCheck=new InternetCheck();
-        boolean b=internetCheck.checkConnection(approved_complaints.this);
+        boolean b=internetCheck.checkConnection(Approved_Complaints.this);
 
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         final String company = sh.getString("company", "");
@@ -71,7 +72,7 @@ public class approved_complaints extends AppCompatActivity {
                 public void onResponse(String response) {
                     pd.dismiss();
                     if (response.trim().equals("")) {
-                        Toast.makeText(approved_complaints.this, "There are no approved complaints to display", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Approved_Complaints.this, "There are no approved complaints to display", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         //Toast.makeText(approved_complaints.this, "hii" + response, Toast.LENGTH_SHORT).show();
@@ -79,24 +80,23 @@ public class approved_complaints extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String name1 = null;
-                                String complaint_id1 = null;
-                                String subject1 = null;
-                                String description1 = null;
-                                String upvote1 = null;
-                                subject1 = jsonObject.getString("subject");
-                                name1 = jsonObject.getString("name");
-                                description1 = jsonObject.getString("description");
-                                complaint_id1 = jsonObject.getString("complaint_id");
-                                upvote1 = jsonObject.getString("upvote");
-                                complaint.add(description1);
-                                upvote.add(upvote1 + " upvote");
-                                subject.add(subject1);
-                                complaint_id.add(complaint_id1);
-                                emp_name.add("Raised by " + name1);
+                                Complaint complaint_object=new Complaint();
+                                complaint_object.setSubject(jsonObject.getString("subject"));
+                                complaint_object.setEmp_name(jsonObject.getString("name"));
+                                complaint_object.setDescription(jsonObject.getString("description"));
+                                complaint_object.setComplaint_id(jsonObject.getString("complaint_id"));
+                                complaint_object.setUpvote(jsonObject.getString("upvote"));
+
+                                complaint.add(complaint_object.getDescription());
+                                upvote.add(complaint_object.getUpvote()+ " upvote");
+                                subject.add(complaint_object.getSubject());
+                                complaint_id.add(complaint_object.getComplaint_id());
+                                emp_name.add("Raised by " + complaint_object.getEmp_name());
                                 adapter.notifyDataSetChanged();
                             }
                         } catch (JSONException e) {
+                            Toast.makeText(Approved_Complaints.this, "something went wrong", Toast.LENGTH_SHORT).show();
+
                             e.printStackTrace();
                         }
                     }
@@ -105,6 +105,7 @@ public class approved_complaints extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     pd.dismiss();
+                    Toast.makeText(Approved_Complaints.this, "something went wrong", Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Nullable
